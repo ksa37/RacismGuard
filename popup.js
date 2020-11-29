@@ -14,14 +14,15 @@
 //     });
 //   };
 
-function executeScript (tab) {
-    chrome.tabs.executeScript(null, {file: "inject.js"});
+function start() {
+    chrome.tabs.executeScript({file: "inject.js"});
+    console.log("done");
 }
 
 
 function main() {
     document.addEventListener('DOMContentLoaded', function () {
-        document.getElementById('alertButton').addEventListener('click', executeScript);
+        document.getElementById('alertButton').addEventListener('click', start);
     });
 }
 
