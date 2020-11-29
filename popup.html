@@ -2,7 +2,8 @@
 <html>
   <head>
     <img src = "images/Icon_Racism.png", width = "40", height= "40">
-    RacismGuard
+    <title>RacismGuard</title>
+    <script language='javascript' src="popup.js"></script>
     <style>
       button {
         height: 30px;
@@ -14,13 +15,13 @@
   <body>
 
     <form action="">
+      <input type='button' id='alertButton' value='Start'>
+
       <p>ID : <input type="text" name="id" ></p>
       <p>PW : <input type="password" name="pwd"></p>
       <input type="submit", value="Login">
       <input type="submit", value="Sign up">
     </form>
 
-    <button id="changeColor"></button>
-    <script src="popup.js"></script>
   </body>
 </html>

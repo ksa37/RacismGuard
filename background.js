@@ -12,3 +12,19 @@ chrome.runtime.onInstalled.addListener(function() {
         }]);
     });
   });
+
+// chrome.webRequest.onBeforeRequest.addListener(
+//     function(details) {
+//         details.requestBody.formData.status="Change the tweet";
+//         console.log(details.url);
+//         if(details.method === "POST") {
+//             console.log(details.requestBody.formData);
+//
+//             if(details.requestBody.formData.status!==null && details.requestBody.formData.status!==undefined ){
+//                 console.log(details.requestBody.formData.status);
+//             }
+//         }
+//     },
+//     {urls: ["<all_urls>"]},
+//     ["requestBody"]
+//);

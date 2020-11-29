@@ -1,27 +1,57 @@
 {
-    "name": "Racism Gaurd",
-    "version": "1.0",
-    "description": "Protects you from Racism words on Chrome",
-    "permissions": ["activeTab", "declarativeContent", "storage"],
-    "background": {
-        "scripts": ["background.js"],
-        "persistent": false
-    },
-    "page_action": {
-        "default_popup": "popup.html",
-        "default_icon": {
-            "16": "images/get_started16.png",
-            "32": "images/get_started32.png",
-            "48": "images/get_started48.png",
-            "128": "images/get_started128.png"
-          }
-    },
-    "icons": {
-        "16": "images/get_started16.png",
-        "32": "images/get_started32.png",
-        "48": "images/get_started48.png",
-        "128": "images/get_started128.png"
-      },
-    "manifest_version": 2
-  }
-  
+  "name": "RacismGuard",
+  "author": "CS489-team2",
+  "manifest_version": 2,
+  "version": "1.0",
+  "description": "a Chrome Web Browser Extension that raises awareness about racism in SNS-Twitter",
+  "icons": {
+    "16": "images/favicon-16x16.png",
+    "32": "images/favicon-32x32.png",
+    "48": "images/favicon-48x48.png",
+    "128": "images/favicon-128x128.png"
+  },
+  "permissions": [
+    "activeTab",
+    "declarativeContent",
+    "storage",
+    "contextMenus",
+    "notifications",
+    "webNavigation",
+    "tabs",
+    "<all_urls>",
+    "http://*/*",
+    "https://*/*",
+    "*://*.twitter.com/*",
+    "http://127.0.0.1/*"
+  ],
+  "background": {
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": false
+  },
+  "page_action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "images/favicon-16x16.png",
+      "32": "images/favicon-32x32.png",
+      "48": "images/favicon-48x48.png",
+      "128": "images/favicon-128x128.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.twitter.com/*",
+        "https://twitter.com/*"
+      ],
+      "js": [
+        "inject.js"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+
+
+
+}
