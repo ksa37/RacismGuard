@@ -1,29 +1,24 @@
-// let changeColor = document.getElementById('changeColor');
-//
-// chrome.storage.sync.get('color', function(data) {
-//   changeColor.style.backgroundColor = data.color;
-//   changeColor.setAttribute('value', data.color);
-// });
-//
-// changeColor.onclick = function(element) {
-//     let color = element.target.value;
-//     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-//       chrome.tabs.executeScript(
-//           tabs[0].id,
-//           {code: 'document.body.style.backgroundColor = "' + color + '";'});
-//     });
-//   };
 
-function start() {
-    chrome.tabs.executeScript({file: "inject.js"});
-    console.log("done");
+
+function signupPledge() {
+    chrome.storage.local.set({signed_in: true});
+    chrome.browserAction.setPopup({
+        popup: 'main-feed.html'
+    }, () => {
+        location.href = "main-feed.html";
+    });
 }
+
+
+//TODO:
+// 1. save accountID to local storage
+// 2.Send accountID to python server by XMLHttpRequest in JSON
 
 
 function main() {
     document.addEventListener('DOMContentLoaded', function () {
-        document.getElementById('alertButton').addEventListener('click', start);
+        document.getElementById('startButton').addEventListener('click', signupPledge);
     });
 }
 
-main()
+main();
