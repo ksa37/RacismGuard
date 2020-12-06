@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import RefreshIcon from '@material-ui/icons/Refresh';
+import { format, render, cancel, register } from 'timeago.js';
 
 import "./Popup.scss";
 
 interface FeedItem {
-  userName: string; tweet: string; tweetUrl: string
+  userName: string; tweet: string; tweetUrl: string; created_at: string
 }
 
 type API = (userName: string) => Promise<FeedItem[]>;
@@ -14,42 +15,50 @@ const fakeServer: API = (userName) => {
     {
       userName: 'racist',
       tweet: 'xxx is black',
-      tweetUrl: 'https://twitter.com/racismguard/status/1333606092849377280?s=20'
+      tweetUrl: 'https://twitter.com/racismguard/status/1333606092849377280?s=20',
+      created_at: '2020-12-05 16:59:59 UTC'
     },
     {
       userName: 'racist',
       tweet: 'xxx is yellow',
-      tweetUrl: 'https://twitter.com/racismguard/status/1333606092849377280?s=20'
+      tweetUrl: 'https://twitter.com/racismguard/status/1333606092849377280?s=20',
+      created_at: '2020-12-05 23:59:59 UTC'
     },
     {
       userName: 'racist',
       tweet: 'uhhahahahaha I am such a racist',
-      tweetUrl: 'https://twitter.com/racismguard/status/1333606092849377280?s=20'
+      tweetUrl: 'https://twitter.com/racismguard/status/1333606092849377280?s=20',
+      created_at: '2020-12-05 23:59:59 UTC'
     },
     {
       userName: 'racist',
       tweet: 'nigga nigga nigga',
-      tweetUrl: 'https://twitter.com/racismguard/status/1333606092849377280?s=20'
+      tweetUrl: 'https://twitter.com/racismguard/status/1333606092849377280?s=20',
+      created_at: '2020-12-05 23:59:59 UTC'
     },
     {
       userName: 'racist',
       tweet: 'xxx is black',
-      tweetUrl: 'https://twitter.com/racismguard/status/1333606092849377280?s=20'
+      tweetUrl: 'https://twitter.com/racismguard/status/1333606092849377280?s=20',
+      created_at: '2020-12-05 23:59:59 UTC'
     },
     {
       userName: 'racist',
       tweet: 'xxxx is yellow',
-      tweetUrl: 'https://twitter.com/racismguard/status/1333606092849377280?s=20'
+      tweetUrl: 'https://twitter.com/racismguard/status/1333606092849377280?s=20',
+      created_at: '2020-12-05 23:59:59 UTC'
     },
     {
       userName: 'racist',
       tweet: 'uhhahahahaha I am such a racist',
-      tweetUrl: 'https://twitter.com/racismguard/status/1333606092849377280?s=20'
+      tweetUrl: 'https://twitter.com/racismguard/status/1333606092849377280?s=20',
+      created_at: '2020-12-05 23:59:59 UTC'
     },
     {
       userName: 'racist',
       tweet: 'nigga nigga nigga',
-      tweetUrl: 'https://twitter.com/racismguard/status/1333606092849377280?s=20'
+      tweetUrl: 'https://twitter.com/racismguard/status/1333606092849377280?s=20',
+      created_at: '2020-12-05 23:59:59 UTC'
     }
 
   ]);
@@ -182,7 +191,7 @@ const FeedPage: React.FC<{ myUserName: string, signOut: () => void }> = ({ myUse
   const fetchFeed = () => {
     fakeServer(myUserName)
       .then(list => setList(list));
-    setRefreshedWhen(new Date().toISOString());
+    setRefreshedWhen(new Date().toString().split('GMT')[0]);
   }
 
   useEffect(() => {
@@ -213,7 +222,7 @@ const FeedPage: React.FC<{ myUserName: string, signOut: () => void }> = ({ myUse
       <div>
         <a href={"#"} onClick={() => gotoURL(el.tweetUrl)} style={{ cursor: 'pointer' }}>{el.tweet}</a><br />
         <div style={{ color: '#A0A0A0', fontSize: 14 }} >
-          by {el.userName} xxxx times ago
+          by {el.userName} {format(new Date(el.created_at))}
         </div>
       </div>
     ))}
