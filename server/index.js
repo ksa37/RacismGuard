@@ -2,27 +2,24 @@ const express = require('express');
 const app = express();
 const { spawn } = require('child_process');
 const { PythonShell } = require("python-shell");
-
 const API_PORT = 3000;
 
-//middleware setting
 app.get('/',(req,res)=>{  
 	res.json("Python Backend");
-})  //req = request 객채 , res = response 객채
+})  
+
+function parseQuery(queryString) {
+    var query = {};
+    var pairs = (queryString[0] === '?' ? queryString.substr(1) : queryString).split('&');
+    for (var i = 0; i < pairs.length; i++) {
+        var pair = pairs[i].split('=');
+        query[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '');
+    }
+    return query;
+}
 
 //APIs
 app.get('/api/classify', (req, res) => {
-
-	// let options = {
-	//   scriptPath: "../test.py",
-	//   args: ["value1", "value2", "value3"]
-	// };
-
-	// PythonShell.run("my_script.py", options, function(err, data) {
-	//   if (err) throw err;
-	//   console.log(data);
-	// });
-
 	let responseData;
 	// const accountId = req.body.accountId ? req.body.accountId : "test";
 	const accountId = "test"
@@ -38,9 +35,34 @@ app.get('/api/classify', (req, res) => {
 		// send data to browser
 		res.send(responseData)
 	});
-
 })
 
+
+app.get('/feeds', (req, res) => {
+
+	let accountId = req.query.username
+	// console.log(test)
+
+	if (req.query.username == undefined) {
+		accountId = "realDonaldTrump"
+	}
+	else {
+		accountId = req.query.username;
+	}
+
+	accountId = "realDonaldTrump"
+	console.log(accountId)
+	
+	let options = {
+		scriptPath: "../",  
+		args: [accountId]
+	};
+
+	PythonShell.run("scrap.py", options, function(err, data) {
+	if (err) throw err;
+ 		res.status(200).json({ data: JSON.parse(data), success: true });
+	});
+});
 
 const server = app.listen(API_PORT,() =>{
 	console.log('Server is running at http://localhost:', API_PORT)
