@@ -1,0 +1,101 @@
+$primary-color: black;
+$danger-color: darkred;
+
+$background-color: #FFFFFF;
+
+// Chrome applies an 8px margin by default (gross).
+body {
+    margin: 0px;
+}
+
+.popupContainer {
+    background-color: $background-color;
+    color: $primary-color;
+    font-size: 20px;
+    height: 450px;
+    justify-content: center;
+    width: 400px;
+}
+
+.header{
+    margin-left: 24px;
+    margin-bottom: 20px;
+
+}
+
+.header img {
+    display: inline;
+    width: 48px;
+    height: 48px;
+}
+.header h1 {
+    display: inline;
+    position: relative;
+    bottom: 10px;
+    font-family: Copperplate, serif;
+    font-size: 36px;
+    color: #657e93;
+}
+
+
+.userInfo {
+    display: flex;
+    justify-content: space-between;
+}
+
+.feed{
+    overflow-y: scroll;
+}
+
+.feedInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+
+.badgeInfo {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.badgeInfo h4 {
+    display: inline;
+    font-size: 16px;
+}
+.badgeInfo h3 {
+    font-size: 16px;
+    display: inline;
+}
+.badgeInfo img {
+    display: inline;
+    width: 30px;
+    height: 30px;
+}
+
+.signout{
+    height: 24px;
+    width: 80px;
+    outline: none;
+    font-size: 16px;
+    color: steelblue;
+}
+
+
+
+.submit{
+    height: 30px;
+    width: 100px;
+    outline: none;
+    font-size: 16px;
+    margin-top: 12px;
+    align-self: center;
+    color: steelblue;
+}
+
+.errorMessage {
+    color: $danger-color;
+    font-size: 12px;
+
+}
