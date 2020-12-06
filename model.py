@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[11]:
-
-
 import string
 import re
 import json
@@ -37,7 +31,7 @@ for idx, tr in enumerate(trs):
 pos_tweets = twitter_samples.strings('positive_tweets.json')
 neg_tweets = twitter_samples.strings('negative_tweets.json') + temp
 
-print(len(neg_tweets))
+#print(len(neg_tweets))
 
 all_tweets = twitter_samples.strings('tweets.20150430-223406.json')
 
@@ -97,20 +91,19 @@ SVCclassifier = SklearnClassifier(SVC())
 SVCclassifier.train(train_set)
 #SVCclassifier.train(train_set)
 SVCaccuracy = classify.accuracy(SVCclassifier, test_set)
-print (NBaccuracy, SVCaccuracy)
+#print (NBaccuracy, SVCaccuracy)
 
-custom_tweet = "You better not score tomorrow you white monkey"
+custom_tweet = "ching chang chong"
 custom_tweet_set = bag_of_words(custom_tweet)
-print (NBclassifier.classify(custom_tweet_set)) 
+#print (NBclassifier.classify(custom_tweet_set)) 
 
 prob_result = NBclassifier.prob_classify(custom_tweet_set)
-print (prob_result) 
+#print (prob_result) 
 print (prob_result.max()) 
 print (prob_result.prob("pos")) 
 print (prob_result.prob("neg"))
 
 
-# In[ ]:
 
 
 
