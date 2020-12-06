@@ -144,7 +144,7 @@ const LoadingPage: React.FC<{ signIn: (userName: string) => void }> = ({ signIn 
         </p>
     </div>
     <div style={{ fontSize: 16 }}>
-      Twitter UserName:  <input id="username"/>
+      Twitter UserName:  <input id="username" autoComplete="off"/>
       <div>
         I agree with the above terms.  
         <input type="checkbox" id="checkbox" checked={checked} onChange={(e) => {
