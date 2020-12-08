@@ -50,7 +50,6 @@ app.get('/feeds', (req, res) => {
 		accountId = req.query.username;
 	}
 
-	accountId = "realDonaldTrump"
 	console.log(accountId)
 	
 	let options = {
@@ -59,8 +58,13 @@ app.get('/feeds', (req, res) => {
 	};
 
 	PythonShell.run("scrap.py", options, function(err, data) {
-	if (err) throw err;
- 		res.status(200).json({ data: JSON.parse(data), success: true });
+		if (err) throw err;
+
+		console.log(data)
+		if (data[0] == "")
+			res.status(200).json("No return data");
+		else
+	 		res.status(200).json({ data: JSON.parse(data), success: true });
 	});
 });
 
