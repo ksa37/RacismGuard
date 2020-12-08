@@ -11,31 +11,29 @@ from sklearn.svm import SVC
 from random import shuffle
 from bs4 import BeautifulSoup
 
+def crawling(target_url):
 
-stopwords_english = stopwords.words('english')
-stemmer = PorterStemmer()
+    html = urllib.request.urlopen(target_url).read()
+    soup = BeautifulSoup(html, 'html.parser')
 
-target_url = 'http://www.rsdb.org/full'
-html = urllib.request.urlopen(target_url).read()
-soup = BeautifulSoup(html, 'html.parser')
+    table = soup.find('table')
+    trs = table.find_all('tr')
+    temp = []
+    for idx, tr in enumerate(trs): 
+        if idx > 0:
+            tds = tr.find_all('td')
+            sequence = tds[0].text.strip() 
+            temp.append(sequence)
 
-table = soup.find('table')
-trs = table.find_all('tr')
-temp = []
-for idx, tr in enumerate(trs): 
-    if idx > 0:
-        tds = tr.find_all('td')
-        sequence = tds[0].text.strip() 
-        temp.append(sequence)
+    return temp
 
-pos_tweets = twitter_samples.strings('positive_tweets.json')
-neg_tweets = twitter_samples.strings('negative_tweets.json') + temp
-
-#print(len(neg_tweets))
-
-all_tweets = twitter_samples.strings('tweets.20150430-223406.json')
-
-emoticons = set([
+ 
+def clean_tweets(tweet):
+    
+    stopwords_english = stopwords.words('english')
+    stemmer = PorterStemmer()
+    
+    emoticons = set([
     ':L', ':-/', '>:/', ':S', '>:[', ':@', ':-(', ':[', ':-||', '=L', ':<',
     ':-[', ':-<', '=\\', '=/', '>:(', ':(', '>.<', ":'-(", ":'(", ':\\', ':-c',
     ':c', ':{', '>:\\', ';(',':-)', ':)', ';)', ':o)', ':]', ':3', ':c)', ':>', '=]', '8)', '=)', ':}',
@@ -44,9 +42,7 @@ emoticons = set([
     'x-p', 'xp', 'XP', ':-p', ':p', '=p', ':-b', ':b', '>:)', '>;)', '>:-)',
     '<3'
     ])
- 
-def clean_tweets(tweet):
-   
+    
     tweet = re.sub(r'\$\w*', '', tweet)
     tweet = re.sub(r'^RT[\s]+', '', tweet)
     tweet = re.sub(r'https?:\/\/.*[\r\n]*', '', tweet)
@@ -70,38 +66,42 @@ def bag_of_words(tweet):
     words_dictionary = dict([word, True] for word in words)    
     return words_dictionary
 
-pos_tweets_set = []
-for tweet in pos_tweets:
-    pos_tweets_set.append((bag_of_words(tweet), 'pos')) 
+def making_sets():
+    
+    pos_tweets = twitter_samples.strings('positive_tweets.json')
+    neg_tweets = twitter_samples.strings('negative_tweets.json') + crawling('http://www.rsdb.org/full')
 
-neg_tweets_set = []
-for tweet in neg_tweets:
-    neg_tweets_set.append((bag_of_words(tweet), 'neg'))    
+    pos_tweets_set = []
+    for tweet in pos_tweets:
+        pos_tweets_set.append((bag_of_words(tweet), 'pos')) 
 
-shuffle(pos_tweets_set)
-shuffle(neg_tweets_set)
+    neg_tweets_set = []
+    for tweet in neg_tweets:
+        neg_tweets_set.append((bag_of_words(tweet), 'neg'))    
+
+    shuffle(pos_tweets_set)
+    shuffle(neg_tweets_set)
  
-test_set = pos_tweets_set[:1000] + neg_tweets_set[:1500]
-train_set = pos_tweets_set[1000:] + neg_tweets_set[1500:]
+    test_set = pos_tweets_set[:1000] + neg_tweets_set[:1500]
+    train_set = pos_tweets_set[1000:] + neg_tweets_set[1500:]
 
-NBclassifier = NaiveBayesClassifier.train(train_set)
-NBaccuracy = classify.accuracy(NBclassifier, test_set)
+    return test_set, train_set
 
-SVCclassifier = SklearnClassifier(SVC())
-SVCclassifier.train(train_set)
-#SVCclassifier.train(train_set)
-SVCaccuracy = classify.accuracy(SVCclassifier, test_set)
-#print (NBaccuracy, SVCaccuracy)
+def classify(test_set, train_set):    
 
-custom_tweet = "ching chang chong"
-custom_tweet_set = bag_of_words(custom_tweet)
-#print (NBclassifier.classify(custom_tweet_set)) 
+    NBclassifier = NaiveBayesClassifier.train(train_set)
+    NBaccuracy = classify.accuracy(NBclassifier, test_set)
 
-prob_result = NBclassifier.prob_classify(custom_tweet_set)
-#print (prob_result) 
-print (prob_result.max()) 
-print (prob_result.prob("pos")) 
-print (prob_result.prob("neg"))
+    custom_tweet = "what are you doing u black monkey"
+    custom_tweet_set = bag_of_words(custom_tweet)
+
+    prob_result = NBclassifier.prob_classify(custom_tweet_set)
+
+    if (prob_result.prob("neg") > 0.6):
+        return True
+    else:
+        return False
+
 
 
 
