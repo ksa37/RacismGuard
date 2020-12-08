@@ -66,7 +66,7 @@ def bag_of_words(tweet):
     words_dictionary = dict([word, True] for word in words)    
     return words_dictionary
 
-def making_sets():
+def make_sets():
     
     pos_tweets = twitter_samples.strings('positive_tweets.json')
     neg_tweets = twitter_samples.strings('negative_tweets.json') + crawling('http://www.rsdb.org/full')
@@ -87,17 +87,20 @@ def making_sets():
 
     return test_set, train_set
 
-def classify(test_set, train_set):    
+def train(test_set, train_set):
 
     NBclassifier = NaiveBayesClassifier.train(train_set)
-    NBaccuracy = classify.accuracy(NBclassifier, test_set)
+    # NBaccuracy = NBclassifier.accuracy(NBclassifier, test_set)
+    return NBclassifier
 
-    custom_tweet = "what are you doing u black monkey"
+def classify(custom_tweet, NBclassifier):    
+
+    # custom_tweet = "what are you doing u black monkey"
     custom_tweet_set = bag_of_words(custom_tweet)
 
     prob_result = NBclassifier.prob_classify(custom_tweet_set)
-
-    if (prob_result.prob("neg") > 0.6):
+    # print(prob_result.prob("neg"))
+    if (prob_result.prob("neg") > 0.75):
         return True
     else:
         return False

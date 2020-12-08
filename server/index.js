@@ -57,14 +57,14 @@ app.get('/feeds', (req, res) => {
 		args: [accountId]
 	};
 
-	PythonShell.run("scrap.py", options, function(err, data) {
+	PythonShell.run("main.py", options, function(err, data) {
 		if (err) throw err;
 
-		console.log(data)
+		console.log(data[0])
 		if (data[0] == "")
 			res.status(200).json("No return data");
 		else
-	 		res.status(200).json({ data: JSON.parse(data), success: true });
+	 		res.status(200).json({ data: data[0], success: true });
 	});
 });
 
